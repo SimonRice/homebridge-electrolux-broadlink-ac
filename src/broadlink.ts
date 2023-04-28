@@ -125,7 +125,7 @@ export function discover(timeout = 500, interfaces?: NetworkInterface, discoverI
         const address = networkInterface.address.split('.');
         const { port } = cs.address();
         const now = new Date();
-        const timezone = now.getTimezoneOffset() / -3600;
+        const timezone = now.getTimezoneOffset() / -60;
         const year = now.getFullYear() - 1900;
         const packet = Buffer.alloc(0x30);
 
