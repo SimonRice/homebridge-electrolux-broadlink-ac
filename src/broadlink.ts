@@ -126,7 +126,7 @@ export function discover(timeout = 500, interfaces?: NetworkInterface, discoverI
         const { port } = cs.address();
         const now = new Date();
         const timezone = now.getTimezoneOffset() / -60;
-        const year = now.getFullYear() - 1900;
+        const year = now.getFullYear();
         const packet = Buffer.alloc(0x30);
 
         if (timezone < 0) {
@@ -140,8 +140,8 @@ export function discover(timeout = 500, interfaces?: NetworkInterface, discoverI
           packet[0x0a] = 0;
           packet[0x0b] = 0;
         }
-        packet[0x0c] = year & 0xff;
-        packet[0x0d] = (year >> 8) & 0xff;
+        packet[0x0c] = (year >> 8) & 0xff;
+        packet[0x0d] = year & 0xff;
         packet[0x0e] = now.getMinutes();
         packet[0x0f] = now.getHours();
         packet[0x10] = ~~year % 100;
