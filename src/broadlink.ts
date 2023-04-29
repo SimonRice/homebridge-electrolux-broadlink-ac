@@ -125,7 +125,7 @@ export function discover(timeout = 500, interfaces?: NetworkInterface, discoverI
         const address = networkInterface.address.split('.');
         const { port } = cs.address();
         const now = new Date();
-        const timezone = now.getTimezoneOffset() / -60;
+        const timezone = now.getTimezoneOffset() / -3600;
         const year = now.getFullYear();
         const packet = Buffer.alloc(0x30);
 
@@ -148,10 +148,10 @@ export function discover(timeout = 500, interfaces?: NetworkInterface, discoverI
         packet[0x11] = now.getDay();
         packet[0x12] = now.getDate();
         packet[0x13] = now.getMonth();
-        packet[0x18] = ~~address[3];
-        packet[0x19] = ~~address[2];
-        packet[0x1a] = ~~address[1];
-        packet[0x1b] = ~~address[0];
+        packet[0x18] = ~~address[0];
+        packet[0x19] = ~~address[1];
+        packet[0x1a] = ~~address[2];
+        packet[0x1b] = ~~address[3];
         packet[0x1c] = port & 0xff;
         packet[0x1d] = (port >> 8) & 0xff;
         packet[0x26] = 6;
@@ -160,7 +160,7 @@ export function discover(timeout = 500, interfaces?: NetworkInterface, discoverI
         packet[0x20] = checksum & 0xff;
         packet[0x21] = (checksum >> 8) & 0xff;
 
-        cs.send(packet, 0, packet.length, discoverIpPort, networkInterface.broadcastAddress);
+        cs.send(packet, 0, packet.length, discoverIpPort, '255.255.255.255');
       });
 
       cs.on('message', (msg, rinfo) => {
